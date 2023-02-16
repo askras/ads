@@ -1,0 +1,4 @@
+jupyter==1.0.0
+pytest==7.2.1
+rise==5.7.1
+wand==0.6.11

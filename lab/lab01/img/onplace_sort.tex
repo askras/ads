@@ -1,0 +1,42 @@
+\documentclass[tikz, margin=3mm]{standalone}
+\usetikzlibrary{shadows}
+\usepackage[edges]{forest}
+
+\usepackage[utf8x]{inputenc} % Включаем поддержку UTF8
+\usepackage[russian]{babel}  % Включаем пакет для поддержки русского языка
+
+
+\begin{document}
+    \begin{forest}
+        for tree={% style of tree nodes
+            draw, semithick, rounded corners, drop shadow,
+            top color = gray!20,
+            bottom color = gray!40,
+            text width = 28mm, text badly centered,
+            % style of tree (edges, distances, direction)
+            edge = {draw, semithick},
+            anchor = east,
+            grow = east,
+            forked edge,    % for forked edge
+            s sep = 4mm,    % sibling distance
+            l sep = 8mm,    % level distance
+            fork sep = 4mm, % distance from parent to branching point
+        }
+        [Методы сортировки
+          %
+          [Не на месте
+            %%
+            [Метод 4]
+            %%
+            [Метод 3]
+          ]
+          %
+          [На месте
+            %%
+            [Метод 2]
+            %%
+            [Метод 1]
+          ]
+        ]
+    \end{forest}
+\end{document}
