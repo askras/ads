@@ -2,11 +2,10 @@
 %! Date = 27.02.2023
 
 % Preamble
-\documentclass[11pt]{article}
+\documentclass[tikz, margin=3mm]{standalone}
 
 % Packages
 \usepackage[utf8]{inputenc}
-\usepackage{tikz}
 \usetikzlibrary{shapes.geometric, arrows}
 
 % Tikz styles
@@ -39,23 +38,31 @@
 \begin{document}
     \begin{tikzpicture}[node distance=2cm]
         % Draw blocks
-        \node (start) [startstop] {Start};
-        \node (i1) [io, below of=start] {Input};
-        \node (p1) [process, below of=i1] {Process 1};
-        \node (d1) [decision, below of=p1, yshift=-0.5cm] {Decision 1};
-        \node (p2a) [process, below of=d1, yshift=-0.5cm] {Process 2a some text some text some text};
-        \node (p2b) [process, right of=d1, xshift=2cm] {Process 2b};
-        \node (o1) [io, below of=p2a] {Output};
-        \node (stop) [startstop, below of=o1] {Stop};
+        \node (start) [startstop, yshift=10cm] {start};
+        \node (input) [io, below of=start] {arr};
+        \node (defstep) [process, below of=input] {step = arr.size};
+        \node (d1) [decision, below of=defstep, yshift=-1cm] {step bigger 1?};
+        \node (step1247) [process, left of=d1, xshift=-3cm, yshift=-4.5cm] {step = step/1.2477; i = 0};
+        \node (d2) [decision, right of=step1247, xshift=3cm] {i smaller arr.size - step?};
+        \node (defj) [process, right of=d2, xshift=4cm] {j = i + step};
+        \node (d3) [decision, below of=defj, yshift=-2cm] {arr[i] bigger arr[j]};
+        \node (swap) [process, below of=d3, yshift=-1.5cm] {swap elements};
+        \node (incr) [process, left of=swap, xshift=-1.5cm] {i++};
+        \node (stop) [startstop, right of=d1, xshift=3cm] {exit};
 
         % Draw arrows
-        \draw [arrow] (start) -- (i1);
-        \draw [arrow] (i1) -- (p1);
-        \draw [arrow] (p1) -- (d1);
-        \draw [arrow] (d1) -- node[anchor=east] {Yes} (p2a);
-        \draw [arrow] (d1) -- node[anchor=south] {No} (p2b);
-        \draw [arrow] (p2b) |- (p1);
-        \draw [arrow] (p2a) -- (o1);
-        \draw [arrow] (o1) -- (stop);
+        \draw [arrow] (start) -- (input);
+        \draw [arrow] (input) -- (defstep);
+        \draw [arrow] (defstep) -- (d1);
+        \draw [arrow] (d1) -| node[anchor=south] {True} (step1247);
+        \draw [arrow] (d1) -- node[anchor=south] {False} (stop);
+        \draw [arrow] (step1247) -- (d2);
+        \draw [arrow] (d2) -- node[anchor=north] {True} (defj);
+        \draw [arrow] (d2) -- node[anchor=east] {False} (d1);
+        \draw [arrow] (defj) -- (d3);
+        \draw [arrow] (d3) -- node[anchor=east] {True} (swap);
+        \draw [arrow] (d3) -| node[anchor=south] {False} (incr);
+        \draw [arrow] (swap) -- (incr);
+        \draw [arrow] (incr) -| (d2);
     \end{tikzpicture}
 \end{document}
