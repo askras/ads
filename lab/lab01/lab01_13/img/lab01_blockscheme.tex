@@ -1,0 +1,42 @@
+\documentclass[tikz, margin=10mm]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usetikzlibrary{shapes.geometric, arrows}
+
+\tikzstyle{startstopblockstyle} = [
+    rectangle, rounded corners=2.5mm, 
+    minimum width=20mm, minimum height=10mm, 
+    text centered, draw=black, fill=red!35
+]
+\tikzstyle{processblockstyle} = [
+    rectangle,
+    minimum width=40mm, minimum height=15mm,
+    text centered, draw=black, fill=orange!20
+]
+\tikzstyle{decisionblockstyle} = [
+    diamond,
+    minimum width=40mm, maximum height=10mm,
+    text centered, draw=black, fill=green!20
+]
+
+\tikzstyle{arrow} = [
+    thick, ->
+]
+
+\begin{document}
+    \begin{tikzpicture} [node distance=40mm]
+        \node (startnode) [startstopblockstyle] {Старт};
+        \node (processnode) [processblockstyle, below of=startnode, yshift=15mm] {Пройтись по массиву};
+        \node (decision1node) [decisionblockstyle, below of=processnode] {Массив отсортирован?};
+
+        \node (stopnode) [startstopblockstyle, right of=decision1node, yshift=-30mm, xshift=-15mm] {Стоп};
+        \node (shufflenode) [processblockstyle, left of=decision1node, yshift=-30mm] {Перемешать массив случайным образом};
+
+        \draw [arrow] (startnode) -- (processnode);
+        \draw [arrow] (processnode) -- (decision1node);
+        \draw [arrow] (decision1node) -- node[anchor=west, yshift=3mm,] {Да} (stopnode.north);
+        \draw [arrow] (decision1node) -- node[anchor=east, yshift=3mm] {Нет} (shufflenode);
+        \draw [arrow] (shufflenode.north) |-  (processnode.west);
+    \end{tikzpicture}
+
+\end{document}
