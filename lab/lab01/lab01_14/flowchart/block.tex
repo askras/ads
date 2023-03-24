@@ -1,0 +1,49 @@
+\documentclass{standalone}
+\usepackage{tikz}  
+\usepackage[russian]{babel}
+\usetikzlibrary{graphs}
+\usetikzlibrary{shapes, arrows}
+\begin{document}
+
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+\tikzstyle{process} = [rectangle, minimum width=4cm, minimum height=1cm, text centered, text width=4cm, draw=black, fill=orange!30]
+\tikzstyle{recurcy} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, text width=3cm, draw=black, fill=purple!30]
+
+\begin{tikzpicture}[node distance=2cm]
+\node (start) [startstop] {Start};
+\node (pro1) [recurcy, below of=start] {\textbf{Stooge sort} \\ \vspace{0.1cm} arr \\ left = 0 \\ right = len(arr) - 1};
+\draw [arrow] (start) -- (pro1); 
+
+\node (dec0) [decision, below of=pro1, yshift=-2cm] {arr[right] < arr[left]};
+\node (pro0) [process, right of=dec0, xshift=4cm] {tmp = arr[left] \\ arr[left] = arr[right] \\ arr[right] = tmp};
+\node (dec1) [decision, below of=dec0, yshift=-3cm] {right - left > 1};
+\draw [arrow] (dec0) -- node[anchor=south] {no} (dec1);
+\draw [arrow] (dec0) -- node[anchor=south] {yes} (pro0);
+
+\draw [arrow] (pro0) |- (dec1);
+\draw [arrow] (pro1) -- (dec0);
+
+
+\node (out1) [io, below of=dec1, yshift=-7cm] {arr};
+\node (pro2a) [process, left of=dec1, xshift=-3cm] {t = (right - left + 1) // 3};
+\draw [arrow] (dec1) -- node[anchor=south] {no} (out1);
+\draw [arrow] (dec1) -- node[anchor=south] {yes} (pro2a);
+
+\node (rec1) [recurcy, below of=pro2a, yshift=-0.2cm] {\textbf{Stooge sort} \\ \vspace{0.1cm} arr \\ left = left \\ right = right - t};
+\node (rec2) [recurcy, below of=rec1, yshift=-0.3cm] {\textbf{Stooge sort} \\ \vspace{0.1cm} arr \\ left = left + t \\ right = right};
+\node (rec3) [recurcy, below of=rec2, yshift=-0.3cm] {\textbf{Stooge sort} \\ \vspace{0.1cm} arr \\ left = left \\ right = right - t};
+\draw [arrow] (pro2a) -- (rec1);
+\draw [arrow] (rec1) -- (rec2);
+\draw [arrow] (rec2) -- (rec3);
+
+\draw [arrow] (rec3) |- (out1);
+
+\node (stop) [startstop, below of=out1, yshift=-0.3cm] {Stop};
+\draw [arrow] (out1) -- (stop);
+
+
+\end{tikzpicture}
+\end{document}
