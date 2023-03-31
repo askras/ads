@@ -30,10 +30,10 @@
         \node(proc_11)[process, below of = condition_11, yshift = -2.5cm, text width = 5cm]{Возвращаем left};
         \node(proc_21)[process, below of = condition_21, yshift = -2.5cm, text width = 5cm]{Возвращвем right};
         
+        \node(stop1)[startstop, below of = condition_3, yshift = -1cm]{КОНЕЦ};
         \node(stop)[startstop, below of = proc_21, yshift = -2cm]{КОНЕЦ};
 
         \coordinate(max_ind) at ($(max_find.north) + (0, 5mm)$);
-        % \coordinate(i_cond) at ($(max_find.north) + (0, 5mm)$);
 
         \draw[arrow](start)--(loop_start);
         \draw[arrow](loop_start)--(max_find);
@@ -53,6 +53,8 @@
         \draw[arrow](condition_max.west)--node[anchor = south, xshift = -10mm]{да}+(-8, 0) |-(max_ind);
         \draw[arrow](proc_11)--(stop);
         \draw[arrow](proc_21)--(stop);
+        \draw[arrow](condition_31)--(stop);
+        \draw[arrow](condition_3)--(stop1);
         % \draw[arrow](condition_0)-- node[anchor = west]{да}(stop);
 
     \end{tikzpicture}
