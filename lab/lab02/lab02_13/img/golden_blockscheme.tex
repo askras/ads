@@ -1,0 +1,44 @@
+\documentclass[tikz, margin=5mm]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=red!35]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!20]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!20]
+\tikzstyle{decision} = [diamond, aspect=2, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!20]
+\tikzstyle{arrow} = [thick,->]
+
+\begin{document}
+
+\begin{tikzpicture}[node distance=2cm]
+    \node (start) [startstop] {Старт};
+    \node (input) [io, below of=start, text width=8cm] {Задана функция $f(x)$, интервал $[a, b]$, точность $\varepsilon$ и коэффициент золотого сечения $\varPhi$}; 
+    \node (proc1) [process, below of=input] {Вычисляем: $x_1 = b - \dfrac{L}{\varPhi}$ и $x_2 = a + \dfrac{L}{\varPhi}$, где $L = b - a$};  
+    \node (dec1) [decision, below of=proc1] {$x_2 - x_1 > \varepsilon$ ?};
+    \node (dec2) [decision, below of=dec1, yshift=-1cm] {$f(x_1) < f(x_2)$ ?};
+    \node (proc2) [process, below of=dec2, xshift=-3cm, text width=4cm, yshift=-1cm] {Обновить значения:\\ $b = x_2$,\\ $x_2 = x_1$,\\ $x_1 = b - \dfrac{b - a}{\varPhi}$};
+    \node (proc3) [process, below of=dec2, xshift=3cm, text width=4cm, yshift=-1cm] {Обновить значения:\\ $a = x_1$,\\ $x_1 = x_2$,\\ $x_2 = a + \dfrac{b - a}{\varPhi}$};
+
+    \node (proc4) [process, right of=dec1, xshift=3cm, text width=4cm] {Вернуть результат:\\ $\dfrac{a + b}{2}$};
+    \node (stop) [startstop, below of=proc4, yshift=5mm] {Стоп};
+
+
+
+    \draw [arrow] (start) -- (input);
+    \draw [arrow] (input) -- (proc1);
+    \draw [arrow] (proc1) -- (dec1);
+    \draw [arrow] (dec1) node[anchor=north, xshift=3mm, yshift=-7mm]{Да} -- (dec2);
+    \draw [arrow] (dec2) node[anchor=north, xshift=-11mm, yshift=-4mm]{Да} -- (proc2);
+    \draw [arrow] (dec2) node[anchor=north, xshift=12mm, yshift=-4mm]{Нет} -- (proc3);
+    \draw [arrow] (proc2) -- (dec1.west);
+    \draw [arrow] (proc3) -- (dec1.east);
+
+    \draw [arrow] (dec1) node[anchor=west, xshift=16mm, yshift=2mm]{Нет} -- (proc4);
+    \draw [arrow] (proc4) -- (stop);
+
+\end{tikzpicture}
+
+\end{document}
