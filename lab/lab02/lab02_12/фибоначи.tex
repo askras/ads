@@ -1,0 +1,35 @@
+\documentclass[tikz, margin=15mm]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usetikzlibrary{shapes.geometric, arrows}
+
+\tikzstyle{startstop} = [rectangle, rounded corners=2.5mm,     minimum width=20mm, minimum height=10mm,     text centered, draw=black, fill=red!35]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{process} = [rectangle,    minimum width=40mm, minimum height=15mm,    text centered, draw=black, fill=yellow!20]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+\begin{document}
+\begin{tikzpicture}[node distance=2cm]
+
+% Define the nodes
+\node (start) [startstop] {Начало};
+\node (init) [process, below of=start] {Инициализация};
+\node (loop) [decision, below of=init, yshift=-1.5cm] {Конец?};
+\node (fib) [process, below of=loop, yshift=-1.5cm] {Рассчитать $n$-ое число Фибоначчи};
+\node (compare) [decision, below of=fib, yshift=-1.5cm] {$n$ равно $x$?};
+\node (result) [io, below of=compare, yshift=-1.5cm] {Вывести результат};
+\node (update) [process, right of=compare, xshift=5cm] {Обновить переменные};
+\node (stop) [startstop, below of=result] {Конец};
+
+% Connect the nodes with arrows
+\draw [arrow] (start) -- (init);
+\draw [arrow] (init) -- (loop);
+\draw [arrow] (loop) -- node[anchor=east] {Да} (fib);
+\draw [arrow] (fib) -- (compare);
+\draw [arrow] (compare) -- node[anchor=east] {Да} (result);
+\draw [arrow] (compare) -- node[anchor=south] {Нет} (update);
+\draw [arrow] (update) |- (loop);
+\draw [arrow] (result) -- (stop);
+
+\end{tikzpicture}
+\end{document}
